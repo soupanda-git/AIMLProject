@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script>
+      async function trackObjects() 
+      {
+          let photo = document.getElementById("filePhoto").files[0];
+          let formData = new FormData();
+          
+          formData.append("file", photo);
+          const ctrl = new AbortController()    // timeout
+          setTimeout(() => ctrl.abort(), 5000);
+          
+          try {
+            let r = fetch('/yolov5_a2', {method: "POST", body: formData});
+            r.then(response=>response.json())
+            .then(data=>{ console.log(data); 
+              let srcImg = document.getElementById('vSrcMP4');
+              let resImg = document.getElementById('vResMP4');
+              srcImg.src = 'image/' + data.req_file;
+              resImg.src = 'image/' + data.res_file;
+              let srcV = document.getElementById('vSrc');
+              let resV = document.getElementById('vRes');
+              srcV.load();
+              resV.load();
+            })
+          } catch(e) {
+            console.log('We have problem...:', e);
+          }
+          
+      }
+    </script>
+  </head>
+  <body>
+    <div class="card">
+      <div class="card-header">
+        <h6>YOLO v5 Experiment <span class="card-subtitle mb-2 text-muted"> - On Video</span></h6>
+        
+      </div>
+      <div class="card-body">
+        <div id="res">
+          <div class="row">
+            <div class="col-sm-2">
+                Video path: 
+            </div>
+            <div class="col-sm-5">
+              <input type="file" class="btn btn-outline-secondary btn-sm" id="filePhoto"/>              
+            </div>
+            <div class="col-sm-5">
+              <input type="button" class="btn btn-primary" value="Detect Object(s)" onclick="trackObjects()">
+              <button type="button" class="btn btn-secondary">Clear</button>
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div id="log"></div>
+            </div>  
+          </div>
+          <hr class="my-4">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-header">
+                  Source Video
+                </div>                
+                <video id="vSrc"  class="img-fluid rounded card-img-top" controls>
+                  <source id="vSrcMP4" src="" type="video/mp4">
+                Your browser does not support the video tag.
+                </video>               
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-header">
+                  Result Video
+                </div>                  
+                  <video id="vRes" class="img-fluid rounded card-img-top" controls>                                   
+                    <source id="vResMP4" src="image/2d5bb8e4-3efe-4a04-b8ac-88c680707f43.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                  </video>               
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <footer class="blockquote-footer">Developed by <cite title="Source Title">Soumyakanta Panda</cite></footer>
+    </div>
+    </div>
+  </body>
+</html>
+
