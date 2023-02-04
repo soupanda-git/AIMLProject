@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request, File,UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from tensorflow.keras import models
 from tensorflow.keras.applications.resnet50 import ResNet50
 from tensorflow.keras.preprocessing import image
@@ -14,9 +15,22 @@ import cv2
 import glob
 import os
 import uuid
+from pathlib import Path
 
 app = FastAPI(title='HTML Example')
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=['*'],
+    allow_headers=['*'],
+)
+print('Hello from Main')
 app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/html", StaticFiles(directory="html"), name="html")
+#templates = Jinja2Templates(directory="HTML")
+#BASE_DIR = Path(__file__).resolve().parent
+print(os.listdir())
 templates = Jinja2Templates(directory="html")
 
 @app.get('/home', response_class=HTMLResponse)
@@ -51,9 +65,14 @@ async def index(request:Request, id:str):
 async def image(request:Request, id:str):    
     return FileResponse("./tmp/"+id)
 
+@app.get('/html/{id}', response_class=HTMLResponse)
+async def image(request:Request, id:str):    
+    return FileResponse("./html/"+id)
+
 
 #YOLOv5
 yolov5Model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
+#yolov5Model = torch.hub.load('ultralytics/yolov5', 'custom', 'Soumya_yolov5.pt')
 @app.post("/yolov5_a1",tags=['YOLOv5 Model'])
 def predict_imageYOLOv5(file: UploadFile = File(...)):
     try:
