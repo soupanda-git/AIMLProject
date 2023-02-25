@@ -1,3 +1,4 @@
+# Team-7
 # Object detection and tracking on the Road.
 
 The project involves developing/building a model which identifies all target objects and determines the category and position information. This model should be able to detect multiple objects and segmentation in a moving video for e.g. Image tagging, lane detection, drivable area segmentation, road object detection, semantic segmentation, instance segmentation, multi-object detection tracking, multi-object segmentation tracking, domain adaptation, and imitation learning.
@@ -7,9 +8,16 @@ The project involves developing/building a model which identifies all target obj
 ## Project report (add link here)
 
 ## Timeline
-  - [x] ..
-  - [ ] ..
-  - [ ] Add delight to the experience when all tasks are complete :tada:
+  - [x] Project understanding
+  - [x] Literature review
+  - [x] Dataset prepration
+  - [x] Model training
+  - [x] Local deployment
+  - [x] Cloud deployment
+  - [x] Fine tunning 
+  - [x] Real time demo
+  - [x] Project report and preseatation
+  - [ ] Track any object challenge
 
 # Literature Review
 
